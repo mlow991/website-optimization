@@ -10,8 +10,42 @@
     <!-- Hmm, what is the impact of web fonts on speed? Measure it... -->
  <!--   <link href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet"> -->
 
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/print.css" rel="stylesheet" media="print">
+    <style type="text/css">
+html {
+  font-size: 100%;
+  overflow-y: scroll;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: none;
+}
+body { margin: 0; font-size: 14px; line-height: 1.61; font-weight: 400; }
+body{ font-family: 'Open Sans', sans-serif; color: #333; }
+
+a { color: #12C; }
+img { border: 0; max-width: 100%; }
+
+body { background: #fff; }
+header{ max-width: 45em; margin: 0 auto; }
+
+header { padding: 0 0.5em; color: #C90B0B; }
+header img { border-radius: 40px; float: left; }
+header p { font-size:1.5em; font-weight: bold; padding-left: 4em;}
+header p span { font-size: 0.8em; font-weight: normal;}
+
+
+@media only screen and (max-width: 480px) {
+  body { font-size: 12px;}
+  header p { padding-left: 4.5em;}
+}
+</style>
+<script>
+(function(u){function loadCSS(e,t,n){"use strict";function r(){for(var t,i=0;i<d.length;i++)d[i].href&&d[i].href.indexOf(e)>-1&&(t=!0);t?o.media=n||"all":setTimeout(r)}var o=window.document.createElement("link"),i=t||window.document.getElementsByTagName("script")[0],d=window.document.styleSheets;return o.rel="stylesheet",o.href=e,o.media="only x",i.parentNode.insertBefore(o,i),r(),o}for(var i in u){loadCSS(u[i]);}}(['css/style.css','css/print.css']));
+</script>
+<noscript>
+<link href="css/style.css" rel="stylesheet">
+<link href="css/print.css" rel="stylesheet" media="print">
+</noscript>
+    
 
     <script>
       (function(w,g){w['GoogleAnalyticsObject']=g;
@@ -80,5 +114,5 @@
     <footer>
       <p>&copy; Web Performance 2014 <span id="crp-stats"></span></p>
     </footer>
-  </body>
+  </div></body>
 </html>
