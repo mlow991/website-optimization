@@ -499,6 +499,7 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // Moves the sliding background pizzas based on scroll position
 var items;
 var phase = [];
+var offset = (screen.width / 2) + 7;
 function updatePositions() {
   //phase repeats every 5
   frame++;
@@ -508,7 +509,7 @@ function updatePositions() {
     phase[i] = Math.sin(sine + (i % 5));
   }
   for (var i = 0; i < items.length; i++) {
-    items[i].style.transform = 'translate3d(' + (items[i].basicLeft + 100 * phase[i%5]) + 'px,' + '0px,0px)';
+    items[i].style.transform = 'translate3d(' + ((items[i].basicLeft + 100 * phase[i%5])-(offset)) + 'px,' + '0px,0px)';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
