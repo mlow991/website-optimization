@@ -497,17 +497,25 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
 
 // Moves the sliding background pizzas based on scroll position
+
+// Change items to a global variable to be collected only once (inside addEventListenter) for efficiency
 var items;
-var phase = [];
-var offset = (screen.width / 1.98);
+
 function updatePositions() {
-  //phase repeats every 5
   frame++;
   window.performance.mark("mark_start_frame");
+  // phase repeats every 5 instances and can be generated once per updatePositions
+  var phase = [];
+  // offset variable to account for leftward shift in the pizzas after optimization
+  var offset = (screen.width / 1.98);
+  // sine variable reads where the top of the page is and can be calculated ouside all loops for efficiency
   var sine = document.body.scrollTop / 1250;
+  // generates phase values for each 5 instances
   for (var i = 0; i < 5; i++) {
     phase[i] = Math.sin(sine + (i % 5));
   }
+  // uses transform:translate3d(x,y,z) to move the pizzas as it uses gpu to process the movement and increases fps significantly
+  // over the translateX style.
   for (var i = 0; i < items.length; i++) {
     items[i].style.transform = 'translate3d(' + ((items[i].basicLeft + 100 * phase[i%5])-(offset)) + 'px,' + '0px,0px)';
   }
@@ -520,6 +528,8 @@ function updatePositions() {
     var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
     logAverageFrame(timesToUpdatePosition);
   }*/
+
+  // The browser chooses best time to animate with this method
   requestAnimationFrame(updatePositions);
 }
 
@@ -540,6 +550,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
+  // items variable collects the pizzas here instead of inside the loop in update function
   items = document.querySelectorAll('.mover');
   updatePositions();
 });
