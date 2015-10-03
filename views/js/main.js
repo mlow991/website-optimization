@@ -499,7 +499,7 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // Moves the sliding background pizzas based on scroll position
 var items;
 var phase = [];
-var offset = (screen.width / 2) + 7;
+var offset = (screen.width / 1.98);
 function updatePositions() {
   //phase repeats every 5
   frame++;
