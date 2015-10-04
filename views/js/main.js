@@ -421,9 +421,25 @@ var resizePizzas = function(size) {
 
   changeSliderLabel(size);
 
+  function percentOrPixel (element) {
+    var unit = element.slice(-1);
+    var val;
+    if (unit === "%") {
+      val = element.slice(0,-1);
+      val = window.innerWidth * (Number(val) / 100) - 11;
+    } else {
+      val = element.slice(0,-2);
+      val = Number(val);
+    }
+    return val;
+  }
+
   // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
   function determineDx (elem, size) {
-    var oldwidth = elem.offsetWidth;
+    // Elimiate force synchronous layout of page
+    //var oldwidth = window.innerWidth * (Number(elem.style.width.slice(0,-2)) / 100) - 11;
+    //var oldwidth = elem.offsetWidth;
+    var oldwidth = percentOrPixel(elem.style.width);
     var windowwidth = document.querySelector("#randomPizzas").offsetWidth;
     var oldsize = oldwidth / windowwidth;
 
@@ -443,14 +459,15 @@ var resizePizzas = function(size) {
 
     var newsize = sizeSwitcher(size);
     var dx = (newsize - oldsize) * windowwidth;
-
+    console.log("dx: " + dx);
     return dx;
   }
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
+    var dx = determineDx(document.querySelector(".randomPizzaContainer"), size);
     for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
+    //  var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
       var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
       document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
     }
