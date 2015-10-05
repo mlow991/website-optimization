@@ -421,12 +421,26 @@ var resizePizzas = function(size) {
 
   changeSliderLabel(size);
 
+  // Takes into account the media queries for the page.  Allows one to find the width of the container without using offsetWidth
+  function containerSize (width) {
+    if(width >= 1200) {
+      return 1170;
+    }
+    if(width >= 992) {
+      return 970;
+    }
+    if(width >= 768) {
+      return 750;
+    }
+    return width - 33;
+  }
+
   function percentOrPixel (element) {
     var unit = element.slice(-1);
     var val;
     if (unit === "%") {
       val = element.slice(0,-1);
-      val = window.innerWidth * (Number(val) / 100) - 11;
+      val = containerSize(window.innerWidth) * (Number(val) / 100) - 11;
     } else {
       val = element.slice(0,-2);
       val = Number(val);
@@ -440,7 +454,8 @@ var resizePizzas = function(size) {
     //var oldwidth = window.innerWidth * (Number(elem.style.width.slice(0,-2)) / 100) - 11;
     //var oldwidth = elem.offsetWidth;
     var oldwidth = percentOrPixel(elem.style.width);
-    var windowwidth = document.querySelector("#randomPizzas").offsetWidth;
+    var windowwidth = containerSize(window.innerWidth);
+    //var windowwidth = document.querySelector("#randomPizzas").offsetWidth;
     var oldsize = oldwidth / windowwidth;
 
     // Changes the slider value to a percent width
