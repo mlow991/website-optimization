@@ -421,7 +421,8 @@ var resizePizzas = function(size) {
 
   changeSliderLabel(size);
 
-  // Takes into account the media queries for the page.  Allows one to find the width of the container without using offsetWidth
+  // Takes into account the media queries for the page.  Allows one to find the width of the container class without using offsetWidth
+  // NOTE: If the media query values for the bootstrap grid is ever changed, then the appropriate changes need to values in this funciton.
   function containerSize (width) {
     if(width >= 1200) {
       return 1170;
@@ -432,9 +433,12 @@ var resizePizzas = function(size) {
     if(width >= 768) {
       return 750;
     }
+    // Offset value of 33 is shaved off width values lower than the smallest media query
     return width - 33;
   }
 
+  // Reads the current width of an element and returns that value as an number.
+  // This is done to avoid the use of offsetWidth
   function percentOrPixel (element) {
     var unit = element.slice(-1);
     var val;
@@ -450,12 +454,11 @@ var resizePizzas = function(size) {
 
   // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
   function determineDx (elem, size) {
-    // Elimiate force synchronous layout of page
-    //var oldwidth = window.innerWidth * (Number(elem.style.width.slice(0,-2)) / 100) - 11;
-    //var oldwidth = elem.offsetWidth;
+    // Elimiate forced synchronous layout of page with a new function that identifies the width
     var oldwidth = percentOrPixel(elem.style.width);
+    // Eliminate forced synchronous layout of page with new function that takes into account media queries in the CSS to reveal
+    // the width of the div of class container
     var windowwidth = containerSize(window.innerWidth);
-    //var windowwidth = document.querySelector("#randomPizzas").offsetWidth;
     var oldsize = oldwidth / windowwidth;
 
     // Changes the slider value to a percent width
@@ -474,17 +477,16 @@ var resizePizzas = function(size) {
 
     var newsize = sizeSwitcher(size);
     var dx = (newsize - oldsize) * windowwidth;
-    console.log("dx: " + dx);
     return dx;
   }
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
+    // dx calculated outside the loop as it only needs to be calculated once
     var dx = determineDx(document.querySelector(".randomPizzaContainer"), size);
+    // newwidth uses percentOrPixel function to get current width w/out using offsetWidth
     var newwidth = percentOrPixel(document.querySelector(".randomPizzaContainer").style.width) + dx + 'px';
     for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-    //  var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-    //  var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
       document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
     }
   }
