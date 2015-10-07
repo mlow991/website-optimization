@@ -1,3 +1,14 @@
+*********** GENERAL COMMENTS ************
+
+>The folder "src" is the source folder that contains all un-minified CSS, javascript, and html files.
+	-the index.html file in the source folder does not have inlined css for "above the fold" styles.  This is because this action is carried out by a grunt task utilizing the "grunt-critical" that ultimately puts the optimized file into the distribution folder.
+	-the gruntfile and package.json are not visible because they have been purposefully excluded by git
+
+>The folder "dist" contained all the optimized files produced by the grunt taskrunner.
+	-grunt tasks included: grunt-critical, imagemin, responsive-images, htmlmin, cssmin, uglify
+	-the "dist" folder is empty in this repository because the contents have been put in the main directory so they would be available for use in  githubpages
+
+
 *********** OPTIMIZATIONS MADE IN views/js/main.js for pizza.html *************
 
 To increase the FPS to 60 for the moving pizzas the following changes were made:
