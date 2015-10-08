@@ -2,6 +2,19 @@ module.exports = function(grunt) {
 	var critical = require('critical');
 	var mozjpeg = require('imagemin-mozjpeg');
 	grunt.initConfig({
+		postcss : {
+			options: {
+				map: true,
+				processors: [
+					require('autoprefixer-core')({browsers: ['last 2 versions']})
+				]
+			},
+			dist: {
+				src: 'views/css/style.css',
+				dest: 'views/css/style.css'
+			}
+		},
+
 		critical: {
 		    test: {
 		        options: {
@@ -122,11 +135,12 @@ module.exports = function(grunt) {
 
 	});
 
+	grunt.loadNpmTasks('grunt-postcss');
 	grunt.loadNpmTasks('grunt-critical');
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-responsive-images');
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.registerTask('default', ['critical', 'responsive_images', 'imagemin', 'htmlmin', 'cssmin', 'uglify']);
+	grunt.registerTask('default', ['postcss', 'critical', 'responsive_images', 'imagemin', 'htmlmin', 'cssmin', 'uglify']);
 };
