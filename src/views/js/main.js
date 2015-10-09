@@ -484,9 +484,9 @@ var resizePizzas = function(size) {
   // All calls to .querySelector have been replaced by getElementsByClassName as it is faster
   function changePizzaSizes(size) {
     // dx calculated outside the loop as it only needs to be calculated once
-    var dx = determineDx(document.getElementsByClassName("randomPizzaContainer"), size);
+    var dx = determineDx(document.getElementsByClassName("randomPizzaContainer")[0], size);
     // newwidth uses percentOrPixel function to get current width w/out using offsetWidth
-    var newwidth = percentOrPixel(document.getElementsByClassName("randomPizzaContainer").style.width) + dx + 'px';
+    var newwidth = percentOrPixel(document.getElementsByClassName("randomPizzaContainer")[0].style.width) + dx + 'px';
     // length variable declared and taken out of conditional statement so that it is only measured once
     var length = document.getElementsByClassName("randomPizzaContainer").length;
     // pizzaContainer variable declared ouside loop so the DOM is not accessed for every iteration of the loop
