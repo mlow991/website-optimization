@@ -481,13 +481,18 @@ var resizePizzas = function(size) {
   }
 
   // Iterates through pizza elements on the page and changes their widths
+  // All calls to .querySelector have been replaced by getElementsByClassName as it is faster
   function changePizzaSizes(size) {
     // dx calculated outside the loop as it only needs to be calculated once
-    var dx = determineDx(document.querySelector(".randomPizzaContainer"), size);
+    var dx = determineDx(document.getElementsByClassName("randomPizzaContainer"), size);
     // newwidth uses percentOrPixel function to get current width w/out using offsetWidth
-    var newwidth = percentOrPixel(document.querySelector(".randomPizzaContainer").style.width) + dx + 'px';
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+    var newwidth = percentOrPixel(document.getElementsByClassName("randomPizzaContainer").style.width) + dx + 'px';
+    // length variable declared and taken out of conditional statement so that it is only measured once
+    var length = document.getElementsByClassName("randomPizzaContainer").length;
+    // pizzaContainer variable declared ouside loop so the DOM is not accessed for every iteration of the loop
+    var pizzaContainer = document.getElementsByClassName("randomPizzaContainer");
+    for (var i = 0; i < length.length; i++) {
+      pizzaContainer[i].style.width = newwidth;
     }
   }
 
@@ -502,9 +507,10 @@ var resizePizzas = function(size) {
 
 window.performance.mark("mark_start_generating"); // collect timing data
 
+// pizzasDiv taken outside of for loop to limit DOM call to one
+var pizzasDiv = document.getElementById("randomPizzas");
 // This for-loop actually creates and appends all of the pizzas when the page loads
 for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -551,7 +557,9 @@ function updatePositions() {
   }
   // uses transform:translate3d(x,y,z) to move the pizzas as it uses gpu to process the movement and increases fps significantly
   // over the translateX style.
-  for (var i = 0; i < items.length; i++) {
+  // length variable declared outside of loop conditions to limit access to a single time
+  var length = items.length;
+  for (var i = 0; i < length; i++) {
     items[i].style.transform = 'translate3d(' + ((items[i].basicLeft + 100 * phase[i%5])-(offset)) + 'px,' + '0px,0px)';
   }
 
@@ -575,17 +583,23 @@ window.addEventListener('scroll', requestAnimationFrame(updatePositions));
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
+  // elem variable declared ouside of loop to prevent it from being created each loop execution
+  var elem;
+  // movingPizzas variable declared outside loop to limit DOM access per function call for this variable to one
+  // movingPizzas variable switch querySelector to getElementById for speed
+  var movingPizzas = document.getElementById('movingPizzas1');
   for (var i = 0; i < 50; i++) {
-    var elem = document.createElement('img');
+    elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza-100.png";
     elem.style.height = "100px";
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    movingPizzas.appendChild(elem);
   }
   // items variable collects the pizzas here instead of inside the loop in update function
-  items = document.querySelectorAll('.mover');
+  // querySelectorAll replaced by getElementsByClassName for speed
+  items = document.getElementsByClassName('mover');
   updatePositions();
 });
