@@ -491,7 +491,7 @@ var resizePizzas = function(size) {
     var length = document.getElementsByClassName("randomPizzaContainer").length;
     // pizzaContainer variable declared ouside loop so the DOM is not accessed for every iteration of the loop
     var pizzaContainer = document.getElementsByClassName("randomPizzaContainer");
-    for (var i = 0; i < length.length; i++) {
+    for (var i = 0; i < length; i++) {
       pizzaContainer[i].style.width = newwidth;
     }
   }
