@@ -16,14 +16,25 @@
 	-use Grunt to build the proper node_modules folder
 		-to install the dependencies needed to build the distribution version type "npm install" in the cmd line while in the root directory (the src folder)
 	-run the Grunt taskrunner by typing "grunt" in the cmd line while in the root directory
+		-this will run the default grunt task which has all the tasks in proper order necessary for the final build
 	-the published files will be created in the "dist" folder within the "src" folder
 	-to have the published site viewable on github pages move all the contents of the "dist" folder outside the "src" folder and into the folder "%USERNAME%.github.io"
 		-where %USERNAME% is the git repository username that is hosting the page
-		
+
 
 *********** OPTIMIZATIONS MADE IN views/js/main.js for pizza.html *************
 
 To increase the FPS to 60 for the moving pizzas the following changes were made:
+	>To calls to .querySelector, .querySelectorAll
+		-replaced by some form of .getElements (.getElementsByClassName, .getElementById) depending on if it was a class or an ID
+		-done because the Web API call is faster than the former
+		-if these calls were declared inside of a loop, then a variable was assigned to this call to the DOM and taken outside of the loop.  Within the loop the variable was replaced by the DOM call, effectively reducing the calls to the DOM.
+
+	>To conditional statments of loops that access an unchanging variable
+		-declare a variable and assign it the value of that unchanging value
+			-this is done outside the loop
+		-the conditional statement now contains a local variable and does not have to contually measure a value each call to the method
+
 	>To function updatePositions():
 		-phase variable moved out of loop and placed in a smaller loop that only assigns the 5 possible values for it (reduces uneeded calculations)
 		-document.body.scrollTop calculation assigned to a variable and taken out of the loop (this value only needs to be calculated once per update)
@@ -34,6 +45,8 @@ To increase the FPS to 60 for the moving pizzas the following changes were made:
 	>To function called on DOMContentLoad
 		-Decreased the amount of sliding pizzas when loading from 200 to 50 (trim the fat and eliminate exorbitant amount of pizza elements that would never bee rendered)
 		-Assign all mover pizzas to the items array (so that this is only done once per load, instead of every update)
+		-declared serveral variables outside of the loop so that they would only be accessed once per call to document.addEventListener
+			-variables: elem, movingPizzas
 
 	>Added function containerSize
 		-Takes into account media queries from CSS to determine the width of the container that holds the pizzas
